@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Каталог — Ворыпаевское подворье</title>
+<meta name="description" content="Каталог фермерского мяса халяль: баранина целой тушей и частями, говядина, живые бараны и овцы. Цены, корзина и заказ в WhatsApp.">
+<meta name="theme-color" content="#204828">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:title" content="Каталог — Ворыпаевское подворье">
+<meta property="og:description" content="Каталог фермерского мяса халяль: баранина целой тушей и частями, говядина, живые бараны и овцы. Цены, корзина и заказ в WhatsApp.">
+<meta property="og:image" content="img/sheep.jpg">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .chead { padding-top: 28px; padding-bottom: 8px; }
+  .crumbs { font-size: 14px; color: var(--muted); }
+  .crumbs a { text-decoration: none; }
+  .chead h1 { font-size: clamp(32px, 4.4vw, 50px); margin: 8px 0 14px; }
+  .perks { display: flex; gap: 8px; flex-wrap: wrap; }
+  .perks span { background: color-mix(in srgb, var(--acc) 12%, var(--bg)); color: var(--acc); border-radius: 99px; padding: 7px 14px; font-size: 14px; font-weight: 700; }
+
+  .layout { display: grid; grid-template-columns: 220px 1fr 340px; gap: 24px; align-items: start; padding-top: 20px; padding-bottom: 60px; }
+  .layout > * { min-width: 0; }
+  .side { position: sticky; top: 16px; display: flex; flex-direction: column; gap: 2px; }
+  .side .ttl { font-size: 12px; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); font-weight: 700; padding: 0 12px 8px; }
+  .side a { display: flex; justify-content: space-between; padding: 11px 12px; border-radius: 12px; text-decoration: none; font-weight: 600; }
+  .side a small { color: var(--muted); }
+  .side a:hover { background: var(--soft); }
+  .side a.on { background: var(--deep); color: var(--deep-ink); }
+  .side a.on small { color: var(--deep-muted); }
+  .side .help { margin-top: 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 16px; font-size: 14px; color: var(--muted); }
+  .side .help b { color: var(--ink); display: block; margin-bottom: 4px; font-family: var(--serif); font-size: 16px; }
+
+  .search { position: relative; margin-bottom: 12px; }
+  .search input { width: 100%; border: 1px solid var(--line); background: var(--surface); border-radius: 14px; padding: 13px 16px 13px 44px; font: inherit; color: var(--ink); }
+  .search svg { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); width: 18px; color: var(--muted); }
+  .chips { display: none; }
+  .sect { scroll-margin-top: 20px; margin-bottom: 34px; }
+  .sect h2 { font-size: 28px; margin-bottom: 4px; }
+  .sect .hint { color: var(--muted); margin: 0 0 14px; }
+  .nores { padding: 40px; text-align: center; color: var(--muted); }
+
+  .cartcol { position: sticky; top: 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 18px 18px 16px; display: flex; flex-direction: column; max-height: calc(100vh - 32px); }
+  .cartcol h3 { font-size: 22px; }
+  .cartcol .cl { overflow: auto; flex: 1; margin: 0 -4px; padding: 0 4px; }
+  .cartcol .cf { border-top: 1px solid var(--line); padding-top: 12px; margin-top: 8px; }
+
+  @media (max-width: 1100px) { .layout { grid-template-columns: 200px 1fr; } .cartcol { display: none; } }
+  @media (max-width: 1020px) {
+    .layout { grid-template-columns: 1fr; padding-top: 8px; }
+    .side { display: none; }
+    .chips { display: flex; gap: 6px; overflow-x: auto; position: sticky; top: 0; z-index: 20; background: var(--bg); margin: 0 -16px 10px; padding: 8px 16px; scrollbar-width: none; }
+    .chips::-webkit-scrollbar { display: none; }
+    .chips a { flex: none; background: var(--surface); border: 1px solid var(--line); border-radius: 99px; padding: 8px 16px; text-decoration: none; font-weight: 700; font-size: 14px; }
+    .chips a.on { background: var(--deep); color: var(--deep-ink); border-color: var(--deep); }
+    .sect { scroll-margin-top: 70px; }
+  }
+</style>
+</head>
+<body data-page="catalog">
+
+<div class="wrap chead">
+  <div class="crumbs"><a href="index.html">Главная</a> / Каталог</div>
+  <h1>Каталог</h1>
+  <div class="perks"><span>Халяль</span><span>Своя бойня</span><span>Оплата при получении</span><span>Самовывоз из Ворыпаево</span></div>
+</div>
+
+<div class="wrap layout">
+  <aside class="side">
+    <span class="ttl">Категории</span>
+    <div id="side"></div>
+    <div class="help"><b>Не знаете, что выбрать?</b>Позвоните или напишите, и мы подскажем.<br><a href="tel:+79629517400">+7 (962) 951-74-00</a></div>
+  </aside>
+
+  <main>
+    <label class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="q" placeholder="Поиск: туша, говядина, баран…"></label>
+    <nav class="chips" id="chips"></nav>
+    <div id="list"></div>
+  </main>
+
+  <aside class="cartcol">
+    <h3>Корзина</h3>
+    <div class="cl" data-cart-list></div>
+    <div class="cf" data-cart-foot></div>
+  </aside>
+</div>
+
+<footer class="ft"><div class="wrap">
+  <div><b>Ворыпаевское подворье</b>Фермерское мясо · <span class="hl-l">халяль</span> · д. Ворыпаево, г.о. Подольск</div>
+  <div><a href="tel:+79629517400">+7 (962) 951-74-00</a><br>Звонок или WhatsApp</div>
+</div></footer>
+
+<script src="js/data.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/app.js"></script>
+<script>
+const { card, onRender, $, $$ } = App;
+let q = "";
+$("#side").innerHTML = CATEGORIES.map((c, i) => `<a href="#c-${c.id}" data-cat="${c.id}" class="${i ? "" : "on"}">${c.title}<small>${PRODUCTS.filter((p) => p.cat === c.id).length}</small></a>`).join("");
+$("#chips").innerHTML = CATEGORIES.map((c, i) => `<a href="#c-${c.id}" data-cat="${c.id}" class="${i ? "" : "on"}">${c.title}</a>`).join("");
+$("#q").addEventListener("input", (e) => { q = e.target.value.trim().toLowerCase(); draw(); });
+
+const io = new IntersectionObserver((es) => es.forEach((en) => {
+  if (!en.isIntersecting) return;
+  const id = en.target.dataset.cat;
+  $$("#side a, #chips a").forEach((a) => a.classList.toggle("on", a.dataset.cat === id));
+  const chip = $(`#chips [data-cat="${id}"]`);
+  if (chip && getComputedStyle($("#chips")).display !== "none") $("#chips").scrollTo({ left: chip.offsetLeft - 16, behavior: "smooth" });
+}), { rootMargin: "-35% 0px -55% 0px" });
+
+function draw() {
+  const html = CATEGORIES.map((c) => {
+    const ps = PRODUCTS.filter((p) => p.cat === c.id && (!q || (p.title + " " + p.short).toLowerCase().includes(q)));
+    if (!ps.length) return "";
+    return `<section class="sect" id="c-${c.id}" data-cat="${c.id}"><h2>${c.title}</h2><p class="hint">${c.hint}</p><div class="pgrid">${ps.map(card).join("")}</div></section>`;
+  }).join("");
+  $("#list").innerHTML = html || `<div class="nores">По запросу «${q}» ничего не нашли. Позвоните, и мы подскажем.</div>`;
+  $$(".sect").forEach((s) => io.observe(s));
+}
+onRender(draw);
+if (location.hash) setTimeout(() => { const el = document.querySelector(location.hash); el && el.scrollIntoView(); }, 50);
+</script>
+</body>
+</html>

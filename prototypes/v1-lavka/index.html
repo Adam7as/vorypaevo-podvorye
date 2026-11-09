@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ворыпаевское подворье — прототип 1 «Лавка»</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Prata&family=Onest:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #171514; --bg2: #211e1c; --card: #26221f; --line: #3a3430;
+    --text: #f3ece4; --muted: #b3a89c; --accent: #c8553d; --accent2: #e07a5f; --ok: #8fb07a;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.5 "Onest", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  body.lock { overflow: hidden; }
+  a { color: inherit; }
+  button { font: inherit; color: inherit; cursor: pointer; }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+  h1, h2, h3 { font-family: "Prata", serif; font-weight: 400; margin: 0; line-height: 1.15; }
+
+  /* верхняя полоса */
+  .topbar { background: #0f0e0d; color: var(--muted); font-size: 13px; }
+  .topbar .wrap { display: flex; gap: 24px; justify-content: space-between; padding-top: 8px; padding-bottom: 8px; }
+  .topbar b { color: var(--ok); font-weight: 600; }
+  @media (max-width: 700px) { .topbar .hide-m { display: none; } }
+
+  /* шапка */
+  header.main { position: sticky; top: 0; z-index: 40; background: rgba(23,21,20,.92); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+  header.main .wrap { display: flex; align-items: center; gap: 28px; height: 68px; }
+  .logo { display: flex; flex-direction: column; text-decoration: none; line-height: 1.1; }
+  .logo span:first-child { font-family: "Prata", serif; font-size: 21px; }
+  .logo span:last-child { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  nav.menu { display: flex; gap: 6px; flex: 1; }
+  nav.menu > a, nav.menu > .dd > button { background: none; border: 0; padding: 10px 14px; border-radius: 10px; text-decoration: none; font-weight: 500; }
+  nav.menu > a:hover, nav.menu > .dd > button:hover, .dd.open > button { background: var(--bg2); }
+  .dd { position: relative; }
+  .dd > button::after { content: ""; display: inline-block; width: 7px; height: 7px; border-right: 2px solid; border-bottom: 2px solid; transform: rotate(45deg) translate(-2px,-2px); margin-left: 10px; opacity: .7; }
+  .mega { position: absolute; top: calc(100% + 10px); left: 0; width: 560px; background: var(--bg2); border: 1px solid var(--line); border-radius: var(--radius); padding: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 4px; opacity: 0; pointer-events: none; transform: translateY(-6px); transition: .18s; box-shadow: 0 20px 50px rgba(0,0,0,.5); }
+  .dd.open .mega { opacity: 1; pointer-events: auto; transform: none; }
+  .mega a { display: block; padding: 14px 16px; border-radius: 10px; text-decoration: none; }
+  .mega a:hover { background: var(--card); }
+  .mega b { display: block; font-weight: 600; }
+  .mega small { color: var(--muted); }
+  .mega .count { float: right; color: var(--accent2); font-size: 13px; }
+  .cart-btn { margin-left: auto; display: flex; align-items: center; gap: 10px; background: var(--accent); border: 0; padding: 10px 16px; border-radius: 999px; font-weight: 600; }
+  .cart-btn .n { background: #fff; color: var(--accent); border-radius: 999px; min-width: 22px; height: 22px; display: grid; place-items: center; font-size: 13px; padding: 0 6px; }
+  .burger { display: none; margin-left: auto; background: none; border: 1px solid var(--line); border-radius: 10px; width: 44px; height: 44px; }
+  .burger i, .burger i::before, .burger i::after { display: block; width: 18px; height: 2px; background: var(--text); margin: auto; position: relative; content: ""; }
+  .burger i::before { position: absolute; top: -6px; } .burger i::after { position: absolute; top: 6px; }
+  @media (max-width: 860px) {
+    nav.menu, .cart-btn { display: none; }
+    .burger { display: block; }
+  }
+
+  /* мобильное меню */
+  .mnav { position: fixed; inset: 0; z-index: 60; background: var(--bg); padding: 16px; display: none; flex-direction: column; overflow: auto; }
+  .mnav.open { display: flex; }
+  .mnav .head { display: flex; justify-content: space-between; align-items: center; height: 52px; margin-bottom: 8px; }
+  .x { background: var(--bg2); border: 0; width: 44px; height: 44px; border-radius: 12px; font-size: 22px; }
+  .mnav h4 { margin: 18px 0 8px; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+  .mnav a.cat { display: flex; justify-content: space-between; align-items: center; padding: 16px; border-radius: 12px; background: var(--bg2); text-decoration: none; margin-bottom: 8px; }
+  .mnav a.cat small { color: var(--muted); display: block; }
+  .mnav a.plain { display: block; padding: 14px 4px; border-bottom: 1px solid var(--line); text-decoration: none; font-size: 18px; }
+
+  /* hero */
+  .hero { position: relative; min-height: 560px; display: flex; align-items: flex-end; overflow: hidden; }
+  .hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: saturate(.8) brightness(.55); }
+  .hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(23,21,20,0) 30%, var(--bg) 100%); }
+  .hero .wrap { position: relative; z-index: 2; padding-bottom: 56px; width: 100%; }
+  .hero h1 { font-size: clamp(40px, 7vw, 84px); max-width: 12ch; }
+  .hero p { color: #e4d9cc; font-size: 18px; max-width: 46ch; margin: 18px 0 28px; }
+  .hero .row { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 14px 22px; border-radius: 999px; border: 0; font-weight: 600; text-decoration: none; }
+  .btn.primary { background: var(--accent); color: #fff; }
+  .btn.primary:hover { background: var(--accent2); }
+  .btn.ghost { border: 1px solid rgba(255,255,255,.35); background: rgba(0,0,0,.2); }
+  .facts { display: flex; gap: 28px; margin-top: 36px; flex-wrap: wrap; color: var(--muted); font-size: 14px; }
+  .facts b { display: block; color: var(--text); font-size: 20px; font-family: "Prata", serif; font-weight: 400; }
+
+  /* каталог */
+  section { padding: 64px 0; }
+  .sec-head { display: flex; justify-content: space-between; align-items: end; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }
+  .sec-head h2 { font-size: clamp(30px, 4vw, 44px); }
+  .sec-head p { color: var(--muted); margin: 0; max-width: 46ch; }
+  .tabs { position: sticky; top: 68px; z-index: 30; background: var(--bg); padding: 12px 0; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; border-bottom: 1px solid var(--line); margin-bottom: 28px; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tabs button { flex: none; background: var(--bg2); border: 1px solid var(--line); padding: 10px 18px; border-radius: 999px; font-weight: 500; }
+  .tabs button.on { background: var(--text); color: var(--bg); border-color: var(--text); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 20px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; display: flex; flex-direction: column; }
+  .ph { aspect-ratio: 4/3; position: relative; background: radial-gradient(circle at 30% 30%, #4a3a33, #2a2320); display: grid; place-items: center; color: #8d7c6f; font-size: 13px; letter-spacing: .1em; text-transform: uppercase; }
+  .ph .tag { position: absolute; top: 12px; left: 12px; background: var(--accent); color: #fff; font-size: 12px; letter-spacing: 0; text-transform: none; padding: 4px 10px; border-radius: 999px; font-weight: 600; }
+  .card .body { padding: 18px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+  .card h3 { font-size: 21px; }
+  .card p { color: var(--muted); margin: 0; font-size: 14px; }
+  .price { display: flex; align-items: baseline; gap: 10px; margin-top: auto; }
+  .price b { font-size: 22px; }
+  .price small { color: var(--muted); }
+  .opts { display: flex; gap: 6px; }
+  .opts button { flex: 1; background: transparent; border: 1px solid var(--line); border-radius: 10px; padding: 8px; font-size: 14px; }
+  .opts button.on { border-color: var(--accent2); color: var(--accent2); }
+  .buy { display: flex; gap: 8px; }
+  .step { display: flex; align-items: center; border: 1px solid var(--line); border-radius: 999px; }
+  .step button { background: none; border: 0; width: 38px; height: 44px; font-size: 18px; }
+  .step span { min-width: 22px; text-align: center; font-weight: 600; }
+  .buy .btn { flex: 1; padding: 12px; }
+  .cat-anchor { scroll-margin-top: 150px; }
+  .cat-title { grid-column: 1 / -1; display: flex; align-items: baseline; gap: 12px; margin-top: 18px; }
+  .cat-title h3 { font-size: 28px; }
+  .cat-title small { color: var(--muted); }
+
+  /* как заказать */
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; counter-reset: s; }
+  .steps div { border-top: 1px solid var(--line); padding-top: 18px; }
+  .steps div::before { counter-increment: s; content: "0" counter(s); font-family: "Prata", serif; font-size: 40px; color: var(--accent2); display: block; }
+  .steps p { color: var(--muted); }
+  @media (max-width: 760px) { .steps { grid-template-columns: 1fr; } }
+  .where { display: grid; grid-template-columns: 1.1fr 1fr; gap: 24px; align-items: stretch; }
+  .where .box { background: var(--bg2); border-radius: var(--radius); padding: 28px; }
+  .where iframe { width: 100%; height: 100%; min-height: 320px; border: 0; border-radius: var(--radius); filter: grayscale(.4) invert(.9) hue-rotate(180deg); }
+  @media (max-width: 860px) { .where { grid-template-columns: 1fr; } }
+  footer { border-top: 1px solid var(--line); padding: 32px 0 120px; color: var(--muted); font-size: 14px; }
+
+  /* нижняя панель (мобильная) */
+  .mbar { display: none; position: fixed; left: 0; right: 0; bottom: 0; z-index: 45; padding: 10px 12px calc(10px + env(safe-area-inset-bottom)); background: rgba(15,14,13,.96); border-top: 1px solid var(--line); gap: 8px; }
+  .mbar a, .mbar button { background: var(--bg2); border: 0; border-radius: 14px; padding: 10px; text-decoration: none; display: flex; flex-direction: column; align-items: center; font-size: 12px; gap: 2px; min-width: 64px; }
+  .mbar .ico { font-size: 18px; line-height: 1; }
+  .mbar .cartm { flex: 1; flex-direction: row; justify-content: space-between; background: var(--accent); padding: 0 16px; font-size: 15px; font-weight: 600; }
+  .mbar .cartm small { font-weight: 400; opacity: .85; display: block; font-size: 12px; text-align: left; }
+  @media (max-width: 860px) { .mbar { display: flex; } }
+
+  /* корзина */
+  .overlay { position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 70; opacity: 0; pointer-events: none; transition: .25s; }
+  .overlay.open { opacity: 1; pointer-events: auto; }
+  .drawer { position: fixed; z-index: 80; background: var(--bg2); display: flex; flex-direction: column; transition: transform .3s cubic-bezier(.2,.8,.2,1); top: 0; right: 0; bottom: 0; width: 440px; max-width: 100%; transform: translateX(100%); border-left: 1px solid var(--line); }
+  .drawer.open { transform: none; }
+  @media (max-width: 860px) {
+    /* на телефоне корзина открывается снизу, почти на весь экран */
+    .drawer { top: auto; left: 0; width: 100%; height: 92dvh; border-left: 0; border-radius: 22px 22px 0 0; transform: translateY(100%); }
+    .drawer .grip { display: block; }
+  }
+  .grip { display: none; width: 44px; height: 5px; border-radius: 9px; background: var(--line); margin: 10px auto 0; }
+  .dhead { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid var(--line); }
+  .dhead h3 { font-size: 24px; }
+  .dscroll { flex: 1; overflow: auto; }
+  .dbody { padding: 8px 20px 12px; }
+  .line { display: grid; grid-template-columns: 1fr auto; gap: 6px 12px; padding: 16px 0; border-bottom: 1px solid var(--line); }
+  .line .t { font-weight: 600; }
+  .line .s { color: var(--muted); font-size: 13px; grid-column: 1; }
+  .line .sum { text-align: right; font-weight: 600; }
+  .line .step { grid-column: 1; justify-self: start; }
+  .line .rm { background: none; border: 0; color: var(--muted); font-size: 13px; text-decoration: underline; justify-self: end; align-self: center; }
+  .empty { text-align: center; color: var(--muted); padding: 60px 10px; }
+  .dfoot { border-top: 1px solid var(--line); padding: 16px 20px calc(16px + env(safe-area-inset-bottom)); }
+  .tot { display: flex; justify-content: space-between; align-items: baseline; }
+  .tot b { font-size: 26px; font-family: "Prata", serif; font-weight: 400; }
+  .note { color: var(--muted); font-size: 13px; margin: 4px 0 14px; }
+  form.co { display: grid; gap: 10px; margin-top: 18px; }
+  form.co label { font-size: 13px; color: var(--muted); display: grid; gap: 6px; }
+  form.co input, form.co textarea { background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 12px; color: var(--text); font: inherit; }
+  .seg { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .seg label { display: block; }
+  .seg input { position: absolute; opacity: 0; }
+  .seg span { display: block; text-align: center; border: 1px solid var(--line); border-radius: 10px; padding: 11px; color: var(--text); font-size: 14px; }
+  .seg input:checked + span { border-color: var(--accent2); color: var(--accent2); }
+  .wa { width: 100%; background: #25d366; color: #0b2e17; }
+  .toast { position: fixed; left: 50%; bottom: 100px; transform: translate(-50%, 20px); background: var(--text); color: var(--bg); padding: 12px 18px; border-radius: 999px; font-weight: 600; z-index: 90; opacity: 0; transition: .25s; pointer-events: none; }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
+  .logo span { white-space: nowrap; }
+  .proto { position: fixed; bottom: 12px; left: 12px; z-index: 100; background: #ffd23f; color: #111; font-size: 12px; padding: 4px 10px; border-radius: 999px; text-decoration: none; font-weight: 600; }
+  @media (max-width: 860px) { .proto { bottom: auto; top: 112px; left: auto; right: 8px; } }
+  .topbar a { white-space: nowrap; }
+  @media (max-width: 420px) { .topbar .wrap > span:first-child { font-size: 12px; } }
+  body.lock .proto { display: none; }
+</style>
+</head>
+<body>
+<a class="proto" href="../">← Все прототипы</a>
+
+<div class="topbar"><div class="wrap">
+  <span><b>● Халяль</b> · забой по нормам шариата</span>
+  <span class="hide-m">Самовывоз: д. Ворыпаево, г.о. Подольск</span>
+  <a href="tel:+79629517400">+7 (962) 951-74-00</a>
+</div></div>
+
+<header class="main"><div class="wrap">
+  <a class="logo" href="#"><span>Ворыпаевское подворье</span><span>фермерское мясо · халяль</span></a>
+  <nav class="menu">
+    <div class="dd" id="dd">
+      <button type="button" aria-expanded="false">Каталог</button>
+      <div class="mega" id="mega"></div>
+    </div>
+    <a href="#how">Как заказать</a>
+    <a href="#where">Самовывоз</a>
+    <a href="#about">О ферме</a>
+  </nav>
+  <button class="cart-btn" data-open-cart>Корзина <span class="n" data-count>0</span></button>
+  <button class="burger" id="burger" aria-label="Меню"><i></i></button>
+</div></header>
+
+<div class="mnav" id="mnav">
+  <div class="head"><span class="logo"><span>Ворыпаевское подворье</span></span><button class="x" data-close-nav>×</button></div>
+  <h4>Каталог</h4>
+  <div id="mcats"></div>
+  <h4>Информация</h4>
+  <a class="plain" href="#how" data-close-nav>Как заказать</a>
+  <a class="plain" href="#where" data-close-nav>Самовывоз и доставка</a>
+  <a class="plain" href="#about" data-close-nav>О ферме</a>
+  <a class="plain" href="tel:+79629517400">Позвонить: +7 (962) 951-74-00</a>
+</div>
+
+<section class="hero" id="about">
+  <img src="../assets/pasture.jpg" alt="Бараны, корова и бык на пастбище">
+  <div class="wrap">
+    <h1>Мясо с нашего двора к вашему столу</h1>
+    <p>Баранина и говядина от собственного стада в Ворыпаево. Халяль. Соберите заказ в корзине, и мы подтвердим его в WhatsApp.</p>
+    <div class="row">
+      <a class="btn primary" href="#catalog">Перейти в каталог</a>
+      <a class="btn ghost" href="#where">Как добраться</a>
+    </div>
+    <div class="facts">
+      <div><b>от 650 ₽/кг</b>говядина</div>
+      <div><b>800 ₽/кг</b>баранина тушей</div>
+      <div><b>Халяль</b>по нормам шариата</div>
+    </div>
+  </div>
+</section>
+
+<section id="catalog"><div class="wrap">
+  <div class="sec-head">
+    <h2>Каталог</h2>
+    <p>Цена указана за килограмм. В корзине считаем примерную сумму, а точную назовём после взвешивания.</p>
+  </div>
+  <div class="tabs" id="tabs"></div>
+  <div class="grid" id="grid"></div>
+</div></section>
+
+<section id="how"><div class="wrap">
+  <div class="sec-head"><h2>Как заказать</h2></div>
+  <div class="steps">
+    <div><h3>Соберите корзину</h3><p>Выберите части и количество. Сумма в корзине примерная.</p></div>
+    <div><h3>Отправьте в WhatsApp</h3><p>Заказ уйдёт нам одним сообщением. Ответим, уточним вес и время.</p></div>
+    <div><h3>Заберите на ферме</h3><p>Оплата при получении после взвешивания. Крупные заказы доставим.</p></div>
+  </div>
+</div></section>
+
+<section id="where"><div class="wrap where">
+  <div class="box">
+    <h2 style="font-size:34px">Самовывоз и доставка</h2>
+    <p style="color:var(--muted)">Московская область, городской округ Подольск, деревня Ворыпаево. Время встречи согласуем при подтверждении заказа.</p>
+    <p style="color:var(--muted)">Крупные заказы (от целой туши) доставим по договорённости.</p>
+    <p>Координаты: 55.4796061, 37.6631334</p>
+    <a class="btn primary" target="_blank" rel="noopener" href="https://yandex.ru/maps/?pt=37.6631334,55.4796061&z=15&l=map">Открыть в Яндекс Картах ↗</a>
+  </div>
+  <iframe title="Карта" loading="lazy" src="https://yandex.ru/map-widget/v1/?pt=37.6631334,55.4796061&z=13&l=map"></iframe>
+</div></section>
+
+<footer><div class="wrap">© Ворыпаевское подворье · Прототип 1 «Лавка» · Фото временное, с первоисточника</div></footer>
+
+<div class="mbar">
+  <button data-open-nav><span class="ico">☰</span>Меню</button>
+  <a href="tel:+79629517400"><span class="ico">✆</span>Звонок</a>
+  <button class="cartm" data-open-cart><span>Корзина <small data-count-text>пусто</small></span><span data-total>0 ₽</span></button>
+</div>
+
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer" aria-label="Корзина">
+  <div class="grip"></div>
+  <div class="dhead"><h3>Корзина</h3><button class="x" data-close-cart>×</button></div>
+  <div class="dscroll"><div class="dbody" id="dbody"></div><div class="dbody" id="dform"></div></div>
+  <div class="dfoot" id="dfoot"></div>
+</aside>
+<div class="toast" id="toast">Добавлено в корзину</div>
+
+<script src="../shared/data.js"></script>
+<script src="../shared/cart.js"></script>
+<script>
+const { rub, kg } = Cart;
+const cart = Cart.createCart("proto-v1");
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const byCat = (c) => PRODUCTS.filter((p) => p.cat === c);
+const state = { qty: {}, opt: {} };
+
+// меню
+$("#mega").innerHTML = CATEGORIES.map((c) => `<a href="#cat-${c.id}" data-cat="${c.id}"><span class="count">${byCat(c.id).length} поз.</span><b>${c.title}</b><small>${c.hint}</small></a>`).join("");
+$("#mcats").innerHTML = CATEGORIES.map((c) => `<a class="cat" href="#cat-${c.id}" data-close-nav><span>${c.title}<small>${c.hint}</small></span><span>→</span></a>`).join("");
+const dd = $("#dd");
+dd.querySelector("button").onclick = (e) => { e.stopPropagation(); dd.classList.toggle("open"); };
+document.addEventListener("click", () => dd.classList.remove("open"));
+$$("#mega a").forEach((a) => (a.onclick = () => dd.classList.remove("open")));
+
+// вкладки
+$("#tabs").innerHTML = `<button class="on" data-tab="all">Все</button>` + CATEGORIES.map((c) => `<button data-tab="${c.id}">${c.title}</button>`).join("");
+$("#tabs").onclick = (e) => {
+  const b = e.target.closest("button"); if (!b) return;
+  $$("#tabs button").forEach((x) => x.classList.toggle("on", x === b));
+  const t = b.dataset.tab;
+  if (t === "all") window.scrollTo({ top: $("#catalog").offsetTop - 60 }); else $("#cat-" + t).scrollIntoView();
+};
+
+function card(p) {
+  const q = state.qty[p.id] || 1;
+  const opt = p.options ? state.opt[p.id] || p.options[0] : null;
+  return `<article class="card">
+    <div class="ph">${p.badge ? `<span class="tag">${p.badge}</span>` : ""}фото скоро</div>
+    <div class="body">
+      <h3>${p.title}</h3>
+      <p>${p.short}</p>
+      ${p.options ? `<div class="opts">${p.options.map((o) => `<button data-opt="${p.id}|${o}" class="${o === opt ? "on" : ""}">${o}</button>`).join("")}</div>` : ""}
+      <div class="price"><b>${rub(p.pricePerKg)}</b><small>/кг · ≈ ${rub(p.pricePerKg * p.approxKg)} за ${p.unit}</small></div>
+      <div class="buy">
+        <div class="step"><button data-dec="${p.id}">−</button><span>${q}</span><button data-inc="${p.id}">+</button></div>
+        <button class="btn primary" data-add="${p.id}">В корзину</button>
+      </div>
+    </div></article>`;
+}
+function renderGrid() {
+  $("#grid").innerHTML = CATEGORIES.map((c) => `<div class="cat-title cat-anchor" id="cat-${c.id}"><h3>${c.title}</h3><small>${c.hint}</small></div>` + byCat(c.id).map(card).join("")).join("");
+}
+renderGrid();
+$("#grid").onclick = (e) => {
+  const t = e.target.closest("button"); if (!t) return;
+  const d = t.dataset;
+  if (d.inc) state.qty[d.inc] = (state.qty[d.inc] || 1) + 1;
+  if (d.dec) state.qty[d.dec] = Math.max(1, (state.qty[d.dec] || 1) - 1);
+  if (d.opt) { const [id, o] = d.opt.split("|"); state.opt[id] = o; }
+  if (d.add) {
+    const p = PRODUCTS.find((x) => x.id === d.add);
+    const opt = p.options ? state.opt[p.id] || p.options[0] : null;
+    cart.add({ key: p.id + (opt ? ":" + opt : ""), title: p.title, note: opt, pricePerKg: p.pricePerKg, approxKg: p.approxKg, unit: p.unit }, state.qty[p.id] || 1);
+    state.qty[p.id] = 1;
+    toast();
+  }
+  renderGrid();
+};
+
+let tt;
+function toast() { const t = $("#toast"); t.classList.add("show"); clearTimeout(tt); tt = setTimeout(() => t.classList.remove("show"), 1600); }
+
+// корзина
+const drawer = $("#drawer"), overlay = $("#overlay");
+const openCart = () => { drawer.classList.add("open"); overlay.classList.add("open"); document.body.classList.add("lock"); };
+const closeCart = () => { drawer.classList.remove("open"); overlay.classList.remove("open"); document.body.classList.remove("lock"); };
+document.addEventListener("click", (e) => {
+  if (e.target.closest("[data-open-cart]")) openCart();
+  if (e.target.closest("[data-close-cart]") || e.target === overlay) closeCart();
+  if (e.target.closest("[data-open-nav]") || e.target.closest("#burger")) { $("#mnav").classList.add("open"); document.body.classList.add("lock"); }
+  if (e.target.closest("[data-close-nav]")) { $("#mnav").classList.remove("open"); document.body.classList.remove("lock"); }
+});
+document.addEventListener("keydown", (e) => e.key === "Escape" && closeCart());
+
+cart.subscribe((c) => {
+  $$("[data-count]").forEach((el) => (el.textContent = c.count));
+  $$("[data-count-text]").forEach((el) => (el.textContent = c.count ? `${c.count} поз. · ≈${kg(c.totalKg)}` : "пусто"));
+  $$("[data-total]").forEach((el) => (el.textContent = c.count ? "≈ " + rub(c.total) : "0 ₽"));
+  $("#dbody").innerHTML = c.items.length ? c.items.map((i) => `
+    <div class="line">
+      <div class="t">${i.title}${i.note ? " · " + i.note : ""}</div>
+      <div class="sum">≈ ${rub(c.lineTotal(i))}</div>
+      <div class="s">${rub(i.pricePerKg)}/кг · ≈ ${kg(i.approxKg * i.qty)}</div><div></div>
+      <div class="step"><button data-q="${i.key}|-1">−</button><span>${i.qty}</span><button data-q="${i.key}|1">+</button></div>
+      <button class="rm" data-rm="${i.key}">убрать</button>
+    </div>`).join("") : `<div class="empty">Корзина пуста.<br><br><button class="btn primary" data-close-cart>В каталог</button></div>`;
+  $("#dfoot").style.display = $("#dform").style.display = c.items.length ? "" : "none";
+  if (c.items.length && !$("#co")) renderFoot();
+  if ($("#co")) $("#dtotal").textContent = "≈ " + rub(c.total);
+});
+function renderFoot() {
+  $("#dform").innerHTML = `
+    <form class="co" id="co">
+      <div class="seg">
+        <label><input type="radio" name="d" value="Самовывоз из Ворыпаево" checked><span>Самовывоз</span></label>
+        <label><input type="radio" name="d" value="Доставка (обсудить)"><span>Доставка</span></label>
+      </div>
+      <label>Ваше имя<input name="name" autocomplete="given-name" placeholder="Как к вам обращаться"></label>
+      <label>Когда удобно забрать<input name="date" type="date"></label>
+    </form>`;
+  $("#dfoot").innerHTML = `
+    <div class="tot"><span>Итого примерно</span><b id="dtotal">≈ ${rub(cart.total)}</b></div>
+    <div class="note">Точную сумму назовём после взвешивания. Оплата при получении.</div>
+    <button class="btn wa" type="submit" form="co">Отправить заказ в WhatsApp</button>`;
+  $("#co").onsubmit = (e) => {
+    e.preventDefault();
+    const f = new FormData(e.target);
+    window.open(cart.whatsappUrl({ name: f.get("name"), delivery: f.get("d"), date: f.get("date") }), "_blank");
+  };
+}
+$("#dbody").onclick = (e) => {
+  const b = e.target.closest("button"); if (!b) return;
+  if (b.dataset.q) { const [k, d] = b.dataset.q.split("|"); const it = cart.items.find((i) => i.key === k); cart.setQty(k, it.qty + Number(d)); }
+  if (b.dataset.rm) cart.remove(b.dataset.rm);
+};
+</script>
+</body>
+</html>

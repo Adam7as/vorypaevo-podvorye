@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Прототипы сайта фермы</title>
+<style>
+  :root { --bg: #fafaf7; --ink: #1a1a1a; --muted: #6b6b6b; --line: #e3e3dc; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  .wrap { max-width: 1000px; margin: 0 auto; padding: 40px 16px 60px; }
+  h1 { font-size: 32px; margin: 0 0 6px; }
+  .lead { color: var(--muted); margin: 0 0 32px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
+  a.card { display: block; text-decoration: none; color: inherit; border: 1px solid var(--line); border-radius: 18px; overflow: hidden; background: #fff; transition: transform .15s, box-shadow .15s; }
+  a.card:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(0,0,0,.08); }
+  .sw { height: 110px; padding: 18px; display: flex; align-items: flex-end; font-size: 22px; font-weight: 700; }
+  .c1 { background: #171514; color: #f3ece4; font-family: Georgia, serif; font-weight: 400; }
+  .c2 { background: #f3efe6; color: #171615; border-bottom: 2px solid #171615; text-transform: uppercase; }
+  .c2 span { color: #e4572e; }
+  .c3 { background: #ffb703; color: #3a2a00; }
+  .c5 { background: #f6f0e6; color: #2a1f17; font-family: Georgia, serif; font-weight: 400; border-bottom: 4px solid #b4532f; }
+  .c4 { background: #14213d; color: #f8f3e8; font-family: Georgia, serif; font-weight: 400; }
+  .c4 span { color: #c99a3b; }
+  .body { padding: 16px 18px 20px; }
+  .body b { display: block; font-size: 18px; }
+  .body p { color: var(--muted); margin: 6px 0 10px; font-size: 15px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tags span { font-size: 12px; background: #f0f0ea; border-radius: 99px; padding: 3px 10px; }
+  .note { margin-top: 32px; border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px; background: #fff; font-size: 15px; color: var(--muted); }
+  .note b { color: var(--ink); }
+  .note ul { margin: 8px 0 0; padding-left: 20px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Прототипы сайта фермы</h1>
+  <p class="lead">Четыре концепции, у каждой своё меню, своя корзина и своё название-кандидат. Общее у всех: заказ уходит в WhatsApp на +7 (962) 951-74-00. Откройте каждый прототип с компьютера и с телефона.</p>
+
+  <a class="card" href="v5-hybrid/" style="margin-bottom:16px"><div class="sw c5">Ворыпаевское подворье <span style="font-size:14px;font-weight:600;margin-left:auto;background:#fff;color:#b4532f;border-radius:99px;padding:4px 12px">новый</span></div><div class="body">
+    <b>5. «Знакомство + магазин» (гибрид 1 и 3)</b>
+    <p>Главная знакомит с фермой: своё стадо, своя бойня, халяль, отзывы, контакты. Каталог отдельной страницей в механике третьего прототипа: на компьютере категории слева и корзина справа, на телефоне панель внизу и корзина снизу. Светлое тёплое оформление в двух палитрах, переключатель на жёлтой плашке.</p>
+    <div class="tags"><span>светлый, тёплый</span><span>2 страницы</span><span>2 палитры</span><span>схема туши как доп. блок</span></div></div></a>
+
+  <div class="grid">
+    <a class="card" href="v1-lavka/"><div class="sw c1">Ворыпаевское подворье</div><div class="body">
+      <b>1. «Лавка»</b>
+      <p>Классический магазин. Каталог раскрывается большим выпадающим меню, вкладки категорий закреплены при прокрутке. Корзина на компьютере выезжает справа, на телефоне открывается снизу на весь экран, внизу закреплена панель с суммой.</p>
+      <div class="tags"><span>тёмный, премиальный</span><span>мега-меню</span><span>боковая корзина</span></div></div></a>
+
+    <a class="card" href="v2-razdelka/"><div class="sw c2">Мясной двор&nbsp;<span>Ворыпаево</span></div><div class="body">
+      <b>2. «Разделка»</b>
+      <p>Интерактивная схема туши барана и быка: нажимаете на часть, выбираете вес, добавляете. Туши, живой вес и наборы идут списком ниже. Корзина открывается окном по центру, на телефоне это отдельный экран.</p>
+      <div class="tags"><span>светлый, графичный</span><span>схема туши</span><span>корзина-окно</span></div></div></a>
+
+    <a class="card" href="v3-app/"><div class="sw c3">Своё из Ворыпаево</div><div class="body">
+      <b>3. «Как приложение»</b>
+      <p>Как приложение доставки продуктов. На компьютере категории слева, корзина всегда видна справа. На телефоне снизу три вкладки (Каталог, Корзина, Где мы), есть поиск и кнопка «+» прямо на карточке.</p>
+      <div class="tags"><span>яркий, удобный</span><span>поиск</span><span>корзина всегда на виду</span></div></div></a>
+
+    <a class="card" href="v4-halal/"><div class="sw c4">Чистое&nbsp;<span>стадо</span></div><div class="body">
+      <b>4. «Халяль и праздники»</b>
+      <p>Упор на доверие и сезонность: дни забоя, предзаказ барана к Курбан-байраму. Заказ оформляется в 3 шага: состав, дата, контакты.</p>
+      <div class="tags"><span>спокойный, торжественный</span><span>дни забоя</span><span>оформление по шагам</span></div></div></a>
+  </div>
+
+  <div class="note">
+    <b>Что важно знать про прототипы</b>
+    <ul>
+      <li>Это макеты: цены частей туши и наборов, дни забоя и «остатки» придуманы для примера.</li>
+      <li>Фото пока одно, с первоисточника. В карточках стоят заглушки «фото скоро», туда пойдут ваши фотографии.</li>
+      <li>Корзина у каждого прототипа своя и сохраняется в браузере. Кнопка «Отправить в WhatsApp» открывает WhatsApp с готовым текстом заказа.</li>
+      <li>Названия можно сочетать с любым дизайном.</li>
+    </ul>
+  </div>
+</div>
+</body>
+</html>
