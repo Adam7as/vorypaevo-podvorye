@@ -1,0 +1,55 @@
+# Автопубликация: каждый push в ветку main выкладывает папку site на Vercel.
+# Нужен секрет репозитория VERCEL_TOKEN (Settings → Secrets and variables → Actions).
+# ID организации и проекта Vercel не секретные, поэтому записаны прямо здесь.
+name: Публикация на Vercel
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # кнопка «Run workflow» во вкладке Actions — опубликовать вручную
+
+concurrency:
+  group: vercel-production
+  cancel-in-progress: false # публикации идут строго по очереди
+
+jobs:
+  deploy:
+    name: Опубликовать сайт
+    runs-on: ubuntu-latest
+    env:
+      VERCEL_ORG_ID: team_qiAUVpA8T1NJGdLuZWgZlanX
+      VERCEL_PROJECT_ID: prj_PikdqULcau6LKmWX62hCJLkr6hlT
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Проверить токен Vercel
+        run: |
+          if [ -z "$VERCEL_TOKEN" ]; then
+            echo "::error::Не задан секрет VERCEL_TOKEN. Владелец проекта должен создать токен на https://vercel.com/account/tokens и добавить его: gh secret set VERCEL_TOKEN --repo ${{ github.repository }}"
+            exit 1
+          fi
+
+      - name: Записать номер версии в сайт
+        env:
+          COMMIT_AUTHOR: ${{ github.event.head_commit.author.name || github.actor }}
+          REPO_URL: ${{ github.server_url }}/${{ github.repository }}
+        run: |
+          node -e '
+            const date = new Intl.DateTimeFormat("ru-RU", { timeZone: "Europe/Moscow", dateStyle: "short", timeStyle: "short" }).format(new Date());
+            const v = { sha: process.env.GITHUB_SHA.slice(0, 7), url: process.env.REPO_URL + "/commit/" + process.env.GITHUB_SHA, date, author: process.env.COMMIT_AUTHOR };
+            require("fs").writeFileSync("site/js/version.js", "window.SITE_VERSION = " + JSON.stringify(v) + ";\n");
+            console.log("Версия:", v);
+          '
+
+      - name: Опубликовать на Vercel
+        run: |
+          url=$(npx --yes vercel@59.15.1 deploy site --prod --yes --token "$VERCEL_TOKEN")
+          echo "Опубликовано: $url"
+          {
+            echo "### Сайт опубликован"
+            echo ""
+            echo "- Адрес: https://vorypaevo-podvorye.vercel.app"
+            echo "- Эта публикация: $url"
+            echo "- Коммит: \`${GITHUB_SHA::7}\` — ${{ github.actor }}"
+          } >> "$GITHUB_STEP_SUMMARY"

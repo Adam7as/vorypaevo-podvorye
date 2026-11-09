@@ -188,5 +188,9 @@
   dd.querySelector("button").addEventListener("click", (e) => { e.stopPropagation(); dd.classList.toggle("open"); });
   document.addEventListener("click", (e) => { if (!e.target.closest("#dd button")) dd.classList.remove("open"); });
 
+  // ---------- номер версии в подвале (заполняется при публикации) ----------
+  const V = window.SITE_VERSION, ft = $("footer.ft .wrap");
+  if (V && ft) ft.insertAdjacentHTML("beforeend", `<div class="ver">Версия <a href="${esc(V.url)}" target="_blank" rel="noopener">${esc(V.sha)}</a> · ${esc(V.date)} · ${esc(V.author)}</div>`);
+
   window.App = { cart, card, onRender, $, $$, rub };
 })();

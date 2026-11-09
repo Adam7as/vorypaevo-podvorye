@@ -190,3 +190,5 @@ footer.ft b { color: var(--deep-ink); font-family: var(--serif); font-size: 18px
 .ci .s small { color: var(--muted); font-weight: 600; }
 .illu { position: absolute; right: 12px; top: 12px; background: rgba(0,0,0,.45); color: #fff; font-size: 11px; padding: 3px 9px; border-radius: 99px; }
 body.lock .toast { display: none; }
+footer.ft .ver { flex-basis: 100%; font-size: 12px; opacity: .6; }
+footer.ft .ver a { color: inherit; }
