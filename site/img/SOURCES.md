@@ -7,4 +7,4 @@
 - `lamb-ribs.jpg`: https://theblackfarmer.com/products/lamb-ribs-1kg
 - `beef-hindquarter.png`: https://www.reznictvi-sloupnice.cz/maso-a-vyrobky/hovezi-zadni-ctvrt
 - `beef-ribs.jpg`: https://bykarna.cz/products/hovezi-zebra
-- `slaughter.jpg` и `sheep-option.jpg`: фотографии, предоставленные владельцем для этой правки.
+- `slaughter-farm-20261110.jpg` и `sheep-option.jpg`: фотографии, предоставленные владельцем для этой правки.
