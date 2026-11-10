@@ -91,11 +91,13 @@
 
   // ---------- карточка товара ----------
   const optSel = {};
-  const curOpt = (p) => (p.options ? optSel[p.id] || p.options[0] : null);
+  const curOpt = (p) => (p.options ? optSel[p.id] || p.defaultOption || p.options[0] : null);
   const keyOf = (p) => p.id + (p.options ? ":" + curOpt(p) : "");
   function photo(p) {
-    if (!p.img) return `<span class="noimg">фото скоро</span>`;
-    return `<img src="img/${p.img}" alt="${esc(p.title)}" loading="lazy" decoding="async" style="object-position:${p.imgPos || "50% 50%"}">`;
+    const variant = p.optionImages?.[curOpt(p)];
+    const img = variant?.img || p.img;
+    if (!img) return `<span class="noimg">фото скоро</span>`;
+    return `<img src="img/${esc(img)}" alt="${esc(variant?.alt || p.title)}" loading="lazy" decoding="async" style="object-fit:${variant?.imgFit || "cover"};object-position:${variant ? variant.imgPos || "50% 50%" : p.imgPos || "50% 50%"}">`;
   }
   function card(p) {
     const inCart = cart.items.find((i) => i.key === keyOf(p));

@@ -14,6 +14,8 @@
 //    approxKg    — примерный вес одной единицы в кг (число) или null, если вес неизвестен
 //    unit        — единица заказа: «туша», «5 кг», «голова»…
 //    options     — варианты на выбор (необязательно)
+//    defaultOption — выбранный при открытии вариант (необязательно)
+//    optionImages — фото и alt для каждого варианта (необязательно)
 //    img, imgPos — фото из папки img и его кадрирование (необязательно)
 //    schema      — true, чтобы показать ссылку «Как разрубим тушу»
 // ============================================================================
@@ -46,7 +48,13 @@ window.PRODUCTS = [
     short: "Можно заказать половину, четверть туши или другую часть.",
     pricePerKg: null, approxKg: null, unit: "часть",
     options: ["Половина", "Четверть", "Другая часть"],
-    img: "lamb.jpg", imgPos: "25% 50%",
+    defaultOption: "Четверть",
+    img: "lamb-leg.jpg",
+    optionImages: {
+      "Половина": { img: "lamb-half.jpg", imgFit: "contain", alt: "Половина бараньей туши" },
+      "Четверть": { img: "lamb-leg.jpg", alt: "Баранья нога — четверть туши" },
+      "Другая часть": { img: "lamb-ribs.jpg", alt: "Бараньи рёбра — пример другой части" },
+    },
   },
   {
     id: "beef", cat: "beef", title: "Говядина",
@@ -54,6 +62,11 @@ window.PRODUCTS = [
     pricePerKg: 650, priceFrom: true, approxKg: 5, unit: "5 кг",
     options: ["Передняя", "Задняя", "Другая"],
     img: "meat.jpg",
+    optionImages: {
+      "Передняя": { img: "meat.jpg", alt: "Говяжьи туши в холодильной камере" },
+      "Задняя": { img: "beef-hindquarter.png", alt: "Задняя четверть говяжьей туши" },
+      "Другая": { img: "beef-ribs.jpg", alt: "Говяжьи рёбра — пример другой части" },
+    },
   },
   {
     id: "live-sheep", cat: "live", title: "Живые бараны и овцы",
@@ -61,5 +74,9 @@ window.PRODUCTS = [
     pricePerKg: 400, priceNote: "за кг живого веса", approxKg: null, unit: "голова",
     options: ["Баран", "Овца"],
     img: "sheep.jpg", imgPos: "55% 60%",
+    optionImages: {
+      "Баран": { img: "sheep.jpg", imgPos: "55% 60%", alt: "Бараны в загоне на ферме" },
+      "Овца": { img: "sheep-option.jpg", alt: "Животные в загоне на ферме" },
+    },
   },
 ];
